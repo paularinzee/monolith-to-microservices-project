@@ -1,3 +1,6 @@
+# Microservices
+<img width="1438" alt="Screenshot 2022-06-17 at 14 52 03" src="https://microservices.io/i/Microservice_Architecture.png">
+
 # Udagram Image Filtering Application
 
 Udagram is a simple cloud application developed alongside the Udacity Cloud Engineering Nanodegree. It allows users to register and log into a web client, post photos to the feed, and process photos using an image filtering microservice.
@@ -84,3 +87,96 @@ Launch the frontend app locally.
     ```
 4. `set_env.sh` is really for your backend application. Frontend applications have a different notion of how to store configurations. Configurations for the application endpoints can be configured inside of the `environments/environment.*ts` files.
 5. In `set_env.sh`, environment variables are set with `export $VAR=value`. Setting it this way is not permanent; every time you open a new terminal, you will have to run `set_env.sh` to reconfigure your environment variables. To verify if your environment variable is set, you can check the variable with a command like `echo $POSTGRES_USERNAME`.
+
+
+## Part 2 - Run the project locally in a multi-container environment
+
+The objective of this part of the project is to:
+
+
+1. Refactor the monolith application to microservices
+2. Set up each microservice to be run in its own Docker container
+
+Once you refactor the Udagram application, it will have the following services running internally:
+
+1. Backend /user/ service - allows users to register and log into a web client.
+
+2. Backend /feed/ service - allows users to post photos, and process photos using image filtering.
+
+3. Frontend - It is a basic Ionic client web application that acts as an interface between the user and the backend services.
+
+4. Nginx as a reverse proxy server - for resolving multiple services running on the same port in separate containers. When different backend services are running on the same port, then a reverse proxy server directs client requests to the appropriate backend server and retrieves resources on behalf of the client.
+
+* Navigate to the project directory, and set up the environment variables again
+ 
+    ```bash
+    source set_env.sh
+    ```
+    
+* Use Docker compose to build and run multiple Docker containers              
+
+* Create images - In the project's parent directory, create a `docker-compose-build.yaml file` . It will create an image for each individual service. Then, you can run the following command to create images locally then run 
+
+Make sure the Docker services are running in your local machine
+
+Remove unused and dangling images
+
+                 docker image prune --all
+
+Run this command from the directory where you have the "docker-compose-build.yaml" file present
+
+            docker-compose -f docker-compose-build.yaml build --parallel
+
+
+
+Docker images running 
+
+
+
+* Run the container 
+
+                        docker-compose up
+
+
+* Visit http://localhost:8100 in your web browser to verify that the application is running.
+
+
+
+#### Backend api feed
+
+
+
+
+
+#### Local host server running
+
+
+
+#### The containerized application running
+
+
+
+
+#### Images of a succesful build and deploy of docker to dockerhub using Gitlab
+
+
+
+### Create the HorizontalPodAutoscaler
+
+- Installation
+
+        kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+- Create the HorizontalPodAutoscaler:(Do this for all deployment)
+
+        kubectl autoscale deployment backend-feed --cpu-percent=70 --min=3 --max=5
+        
+        kubectl autoscale deployment backend-user --cpu-percent=70 --min=3 --max=5
+        
+        kubectl autoscale deployment frontend --cpu-percent=70 --min=3 --max=5
+        
+        kubectl autoscale deployment reverseproxy --cpu-percent=70 --min=3 --max=5
+        
+- You can check the current status of the newly-made HorizontalPodAutoscaler, by running:
+
+                kubectl get hpa
