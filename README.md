@@ -1,5 +1,5 @@
 # Microservices
-<img width="1438" alt="Screenshot 2022-06-17 at 14 52 03" src="https://microservices.io/i/Microservice_Architecture.png">
+<img width="1438" alt="Screenshot 2022-06-17 at 14 52 03" src="https://www.shutterstock.com/image-photo/microservices-architecture-industry-concept-microservice-260nw-1767159287.jpg">
 
 # Udagram Image Filtering Application
 
